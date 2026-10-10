@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="#160d2b" />
+<title>DreamForge AI — Creative Studio</title>
+<style>
+  :root{
+    --bg:#10091e; --panel:#1b1230; --panel2:#24183d; --purple:#9b6cff;
+    --purple2:#c1a3ff; --pink:#f0a5ff; --text:#f8f4ff; --muted:#b8accf;
+    --line:rgba(204,177,255,.16); --good:#a8f0d0;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:radial-gradient(ellipse at top right,#2a1550 0%,var(--bg) 48%,#0b0714 100%);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;min-height:100vh}
+  button,input,textarea{font:inherit}
+  button{cursor:pointer}
+  .app{max-width:480px;margin:0 auto;min-height:100vh;padding:20px 17px 100px}
+  header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:24px}
+  .brand{display:flex;align-items:center;gap:10px;min-width:0}
+  .logo{height:44px;width:44px;border-radius:15px;display:grid;place-items:center;background:linear-gradient(145deg,#c4a4ff,#7b42e8);box-shadow:0 8px 28px #8d5bff42;font-size:23px}
+  .brand h1{font-size:17px;line-height:1.1;margin:0;letter-spacing:-.4px}
+  .brand p{margin:5px 0 0;color:var(--muted);font-size:11px;letter-spacing:1.4px;text-transform:uppercase}
+  .avatar{height:39px;width:39px;border:1px solid #8e68c7;border-radius:50%;background:#2b1b45;color:#eadfff;font-weight:700}
+  .eyebrow{color:var(--purple2);text-transform:uppercase;letter-spacing:2px;font-size:10px;font-weight:800}
+  .hero{padding:23px 21px 21px;border:1px solid var(--line);border-radius:27px;background:linear-gradient(135deg,#30204fdd,#1b1230f2 65%);position:relative;overflow:hidden;box-shadow:0 18px 45px #00000020}
+  .hero:after{content:"✦";position:absolute;right:19px;top:10px;font-size:100px;color:#b99aff12;transform:rotate(15deg)}
+  .hero h2{font-size:30px;line-height:1.08;letter-spacing:-1.1px;margin:11px 0 10px;max-width:300px}
+  .hero h2 span{background:linear-gradient(90deg,#c4a6ff,#f0b5ff);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .hero p{font-size:13px;color:#d0c4e3;line-height:1.6;margin:0 0 18px;max-width:300px}
+  .primary{border:0;border-radius:13px;background:linear-gradient(100deg,#a777ff,#7e4be6);color:white;font-weight:750;padding:12px 16px;box-shadow:0 8px 22px #8749ed35}
+  .credit-pill{position:absolute;right:15px;bottom:17px;border:1px solid #c4a6ff38;background:#120b20aa;border-radius:12px;padding:9px 11px;text-align:center;z-index:1}
+  .credit-pill strong{display:block;font-size:18px}.credit-pill span{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:1px}
+  .section-head{display:flex;align-items:end;justify-content:space-between;margin:27px 2px 13px}
+  .section-head h3{font-size:17px;margin:0;letter-spacing:-.3px}
+  .section-head span{font-size:11px;color:var(--muted)}
+  .tools{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+  .tool{position:relative;text-align:left;border:1px solid var(--line);background:linear-gradient(150deg,#24183c,#191027);color:var(--text);padding:15px 14px 14px;border-radius:20px;min-height:145px;transition:transform .15s,border-color .15s}
+  .tool:active{transform:scale(.98)}.tool:hover{border-color:#a87cff80}
+  .tool-icon{height:39px;width:39px;display:grid;place-items:center;border-radius:13px;background:#8b5ce629;font-size:21px;margin-bottom:13px}
+  .tool h4{margin:0 0 6px;font-size:14px}.tool p{margin:0;color:var(--muted);font-size:11px;line-height:1.45}
+  .badge{position:absolute;top:12px;right:11px;font-size:8px;color:#d9c7ff;border:1px solid #ad83ff45;border-radius:20px;padding:4px 6px;letter-spacing:.4px}
+  .pro-card{margin-top:19px;padding:17px;border:1px solid #c49bff38;border-radius:20px;background:linear-gradient(110deg,#35205b,#24153d 70%);display:flex;align-items:center;gap:12px}
+  .crown{font-size:27px}.pro-card h3{font-size:14px;margin:0 0 5px}.pro-card p{font-size:11px;color:#cbbde1;line-height:1.4;margin:0}
+  .pro-card button{margin-left:auto;white-space:nowrap;border:1px solid #c8aaff66;background:#ffffff0c;color:#f2e9ff;border-radius:10px;padding:9px 11px;font-size:11px;font-weight:750}
+  .bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:min(480px,100%);display:flex;justify-content:space-around;padding:12px 8px calc(12px + env(safe-area-inset-bottom));background:#120b20ed;backdrop-filter:blur(16px);border-top:1px solid var(--line);z-index:5}
+  .nav-item{background:none;border:0;color:#9c8eb6;font-size:10px;display:flex;flex-direction:column;align-items:center;gap:5px;min-width:58px}
+  .nav-item b{font-size:18px;font-weight:500}.nav-item.active{color:#d7c2ff}
+  .page{display:none}.page.active{display:block}
+  .back{background:none;border:0;color:#cdb8ff;padding:7px 0 18px;font-size:13px}
+  .page-title{font-size:26px;letter-spacing:-.8px;margin:0 0 7px}.sub{font-size:13px;line-height:1.55;color:var(--muted);margin:0 0 22px}
+  .form-card{padding:17px;border:1px solid var(--line);border-radius:20px;background:#1b1230d9}
+  label{display:block;font-size:12px;color:#d7c9eb;margin:0 0 9px;font-weight:650}
+  textarea,input{width:100%;background:#10091e;border:1px solid #60448677;border-radius:13px;color:var(--text);padding:13px;outline:none}
+  textarea{min-height:130px;resize:vertical;line-height:1.5}textarea:focus,input:focus{border-color:#a879ff}
+  .hint{font-size:10px;color:#a89bbf;line-height:1.5;margin:9px 0 15px}
+  .full{width:100%;margin-top:5px}
+  .result{display:none;margin-top:16px;padding:15px;border:1px solid #8d67c944;border-radius:15px;background:#10091e;white-space:pre-wrap;line-height:1.6;font-size:13px;color:#eee5ff}
+  .notice{font-size:11px;color:#c2b3d7;line-height:1.55;margin-top:14px}
+  .profile-box{padding:18px;background:#1b1230;border:1px solid var(--line);border-radius:20px;margin-bottom:12px}
+  .profile-box h3{font-size:14px;margin:0 0 7px}.profile-box p{font-size:12px;line-height:1.5;color:var(--muted);margin:0}
+  .toast{position:fixed;bottom:88px;left:50%;transform:translateX(-50%);background:#e7dcff;color:#271442;padding:11px 15px;border-radius:12px;font-size:12px;font-weight:700;box-shadow:0 10px 30px #0006;display:none;z-index:9;max-width:90%;text-align:center}
+  @media(min-width:500px){body{padding:18px 0}.app{border:1px solid #ffffff0a;border-radius:28px;overflow:hidden;background:#10091e70}}
+</style>
+</head>
+<body>
+<div class="app">
+  <header>
+    <div class="brand">
+      <div class="logo">✦</div>
+      <div><h1>DreamForge AI</h1><p>Your creative universe</p></div>
+    </div>
+    <button class="avatar" aria-label="Profile" onclick="showPage('profile')">F</button>
+  </header>
+
+  <main>
+    <section id="home" class="page active">
+      <div class="hero">
+        <div class="eyebrow">Your ideas, reimagined</div>
+        <h2>Make something <span>amazing.</span></h2>
+        <p>One creative space for your stories, content, images and the ideas you can't wait to bring to life.</p>
+        <button class="primary" onclick="showPage('writer')">Start creating&nbsp; ↗</button>
+        <div class="credit-pill"><strong id="creditCount">50</strong><span>starter credits</span></div>
+      </div>
+
+      <div class="section-head"><h3>Explore your tools</h3><span>Choose a studio</span></div>
+      <div class="tools">
+        <button class="tool" onclick="showPage('writer')"><div class="tool-icon">✍️</div><span class="badge">READY TO TRY</span><h4>AI Writer</h4><p>Captions, scripts, ideas and polished content.</p></button>
+        <button class="tool" onclick="showPage('story')"><div class="tool-icon">📚</div><h4>Story Maker</h4><p>Build stories, characters and new worlds.</p></button>
+        <button class="tool" onclick="showPage('image')"><div class="tool-icon">🎨</div><h4>Image Studio</h4><p>Turn your imagination into visual prompts.</p></button>
+        <button class="tool" onclick="showPage('voice')"><div class="tool-icon">🎙️</div><span class="badge">COMING SOON</span><h4>Voice Studio</h4><p>Plan voice-overs for your next creation.</p></button>
+        <button class="tool" onclick="showPage('video')"><div class="tool-icon">🎬</div><span class="badge">COMING SOON</span><h4>Video Studio</h4><p>Shape a short video from a simple idea.</p></button>
+        <button class="tool" onclick="showPage('credits')"><div class="tool-icon">🪙</div><h4>My Credits</h4><p>See your starter balance and future plans.</p></button>
+      </div>
+
+      <div class="pro-card"><div class="crown">👑</div><div><h3>DreamForge Pro</h3><p>More creative room. Fewer limits.<br>Planned launch offer: $5/month.</p></div><button onclick="showPage('pro')">Explore</button></div>
+      <p class="notice">Early preview: your starter credits are a demo balance. AI generation, ads and payments are not connected yet.</p>
+    </section>
+
+    <section id="writer" class="page">
+      <button class="back" onclick="showPage('home')">← Back to studio</button>
+      <div class="eyebrow">Writing desk</div><h2 class="page-title">AI Writer ✍️</h2>
+      <p class="sub">Give your idea a direction. For this first preview, DreamForge helps you shape a prompt you can use with an AI writing service.</p>
+      <div class="form-card">
+        <label for="writeType">What are you creating?</label>
+        <input id="writeType" placeholder="e.g. Instagram caption, business bio..." />
+        <br><br><label for="writePrompt">Tell us your idea</label>
+        <textarea id="writePrompt" placeholder="Describe what you want to write, who it is for, and the tone you want..."></textarea>
+        <p class="hint">Tip: Include your audience, purpose and tone for a stronger result.</p>
+        <button class="primary full" onclick="makeDraft('writer')">Shape my prompt ✨</button>
+        <div id="writerResult" class="result"></div>
+      </div>
+      <p class="notice">This preview prepares a structured prompt locally; it does not yet call an external AI service or generate the final content.</p>
+    </section>
+
+    <section id="story" class="page">
+      <button class="back" onclick="showPage('home')">← Back to studio</button>
+      <div class="eyebrow">Story laboratory</div><h2 class="page-title">Story Maker 📚</h2>
+      <p class="sub">Start with a character, a secret or a world. Turn the seed of an idea into a story brief.</p>
+      <div class="form-card">
+        <label for="storyGenre">Genre or audience</label><input id="storyGenre" placeholder="e.g. children's adventure, romance..." />
+        <br><br><label for="storyPrompt">What's the story idea?</label><textarea id="storyPrompt" placeholder="A little girl discovers a tiny door under her bed..."></textarea>
+        <p class="hint">You can include character names, the setting, the conflict and the mood.</p>
+        <button class="primary full" onclick="makeDraft('story')">Build my story brief ✨</button>
+        <div id="storyResult" class="result"></div>
+      </div>
+      <p class="notice">Story generation through an AI provider will be connected in a later build.</p>
+    </section>
+
+    <section id="image" class="page">
+      <button class="back" onclick="showPage('home')">← Back to studio</button>
+      <div class="eyebrow">Visual imagination</div><h2 class="page-title">Image Studio 🎨</h2>
+      <p class="sub">Describe the image you imagine and create a detailed prompt for an image-generation service.</p>
+      <div class="form-card">
+        <label for="imagePrompt">Describe your image</label><textarea id="imagePrompt" placeholder="A magical purple library floating among the stars, cinematic lighting..."></textarea>
+        <br><br><label for="imageStyle">Visual style</label>
+        <input id="imageStyle" placeholder="e.g. 3D animation, cinematic, watercolor..." />
+        <p class="hint">Specific details about lighting, framing, mood and colors help guide the result.</p>
+        <button class="primary full" onclick="makeDraft('image')">Prepare image prompt ✨</button>
+        <div id="imageResult" class="result"></div>
+      </div>
+      <p class="notice">Image rendering is not connected in this preview. We will connect a provider after choosing a budget-safe option.</p>
+    </section>
+
+    <section id="voice" class="page">
+      <button class="back" onclick="showPage('home')">← Back to studio</button>
+      <div class="eyebrow">Voice booth</div><h2 class="page-title">Voice Studio 🎙️</h2>
+      <p class="sub">Prepare narration text and voice direction for a future text-to-speech feature.</p>
+      <div class="form-card"><label for="voicePrompt">What should the voice say?</label><textarea id="voicePrompt" placeholder="Paste your narration or script here..."></textarea><br><br><label for="voiceStyle">Voice direction</label><input id="voiceStyle" placeholder="e.g. warm, friendly, clear Nigerian English..." /><button class="primary full" onclick="makeDraft('voice')">Prepare voice brief ✨</button><div id="voiceResult" class="result"></div></div>
+      <p class="notice">Audio playback and AI voice generation are coming later.</p>
+    </section>
+
+    <section id="video" class="page">
+      <button class="back" onclick="showPage('home')">← Back to studio</button>
+      <div class="eyebrow">Motion lab</div><h2 class="page-title">Video Studio 🎬</h2>
+      <p class="sub">Plan the core idea for a short video before we connect a video-generation service.</p>
+      <div class="form-card"><label for="videoPrompt">Describe the video</label><textarea id="videoPrompt" placeholder="A 10-second cinematic shot of..."></textarea><br><br><label for="videoFormat">Format / platform</label><input id="videoFormat" placeholder="e.g. vertical 9:16, Reels, YouTube Shorts..." /><button class="primary full" onclick="makeDraft('video')">Prepare video brief ✨</button><div id="videoResult" class="result"></div></div>
+      <p class="notice">Video generation can be expensive, so it will have strict limits when we connect it.</p>
+    </section>
+
+    <section id="credits" class="page">
+      <button class="back" onclick="showPage('home')">← Back to studio</button><div class="eyebrow">Your account</div><h2 class="page-title">My Credits 🪙</h2><p class="sub">Your balance in this preview is a visual demo, not a real paid or spendable balance.</p>
+      <div class="profile-box"><h3>Starter balance</h3><p><strong id="creditCount2" style="color:#e7d8ff;font-size:25px">50</strong> demo credits</p></div>
+      <div class="profile-box"><h3>How credits will work</h3><p>Each AI action will have a clear credit cost. We'll set those costs after comparing provider prices so we don't promise more than the app can afford.</p></div>
+      <div class="profile-box"><h3>Rewarded ads</h3><p>Optional ads may provide bonus credits later, subject to the ad network's policies and actual revenue.</p></div>
+    </section>
+
+    <section id="pro" class="page">
+      <button class="back" onclick="showPage('home')">← Back to studio</button><div class="eyebrow">For your bigger ideas</div><h2 class="page-title">DreamForge Pro 👑</h2><p class="sub">A proposed membership for creators who need more room to make things.</p>
+      <div class="profile-box"><h3 style="font-size:22px">$5 <span style="font-size:12px;color:#b8accf;font-weight:400">/ month · planned</span></h3><p>Planned benefits: a larger monthly credit allowance, fewer interruptions and access to eligible creative tools.</p></div>
+      <div class="profile-box"><h3>Not available for purchase yet</h3><p>No payment will be taken from this preview. We'll only launch subscriptions after usage limits, provider costs, payment handling and cancellation are properly set up.</p></div>
+      <button class="primary full" onclick="toast('Pro is a preview only — payments are not connected yet.')">Notify me at launch</button>
+    </section>
+
+    <section id="profile" class="page">
+      <button class="back" onclick="showPage('home')">← Back to studio</button><div class="eyebrow">Your space</div><h2 class="page-title">Creator profile</h2><p class="sub">Welcome to your DreamForge preview.</p>
+      <div class="profile-box"><h3>DreamForge AI</h3><p>Creative tools for stories, content, images, voice and video — all in one place.</p></div>
+      <div class="profile-box"><h3>Current build</h3><p>Prototype 0.1 · Purple creative studio · Local prompt builder.</p></div>
+      <button class="primary full" onclick="showPage('credits')">View my credits</button>
+    </section>
+  </main>
+</div>
+
+<nav class="bottom-nav" aria-label="Main navigation">
+  <button class="nav-item active" data-nav="home" onclick="showPage('home')"><b>⌂</b>Home</button>
+  <button class="nav-item" data-nav="writer" onclick="showPage('writer')"><b>✍</b>Create</button>
+  <button class="nav-item" data-nav="credits" onclick="showPage('credits')"><b>◈</b>Credits</button>
+  <button class="nav-item" data-nav="profile" onclick="showPage('profile')"><b>○</b>Profile</button>
+</nav>
+<div id="toast" class="toast"></div>
+
+<script>
+  const pages = ['home','writer','story','image','voice','video','credits','pro','profile'];
+  function showPage(name){
+    pages.forEach(id => document.getElementById(id).classList.toggle('active', id === name));
+    document.querySelectorAll('.nav-item').forEach(btn => btn.classList.toggle('active', btn.dataset.nav === name || (name === 'story' || name === 'image' || name === 'voice' || name === 'video' ? name === 'writer' && btn.dataset.nav === 'writer' : false)));
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+  function toast(message){
+    const el=document.getElementById('toast');el.textContent=message;el.style.display='block';
+    clearTimeout(window.toastTimer);window.toastTimer=setTimeout(()=>el.style.display='none',2600);
+  }
+  const fields = {
+    writer:{prompt:'writePrompt',type:'writeType',result:'writerResult',title:'Writing request'},
+    story:{prompt:'storyPrompt',type:'storyGenre',result:'storyResult',title:'Story brief'},
+    image:{prompt:'imagePrompt',type:'imageStyle',result:'imageResult',title:'Image-generation prompt'},
+    voice:{prompt:'voicePrompt',type:'voiceStyle',result:'voiceResult',title:'Voice-over brief'},
+    video:{prompt:'videoPrompt',type:'videoFormat',result:'videoResult',title:'Video brief'}
+  };
+  function makeDraft(kind){
+    const cfg=fields[kind], idea=document.getElementById(cfg.prompt).value.trim(), detail=document.getElementById(cfg.type)?.value.trim() || '';
+    const result=document.getElementById(cfg.result);
+    if(!idea){toast('Add your idea first, then we can shape it.');document.getElementById(cfg.prompt).focus();return;}
+    const labels={writer:'Create the requested content',story:'Develop the story idea',image:'Generate an image based on the description',voice:'Create a spoken narration',video:'Create a short video based on the concept'};
+    let textOut=cfg.title+'\n\nGoal: '+labels[kind]+'\n'+(detail?'Style / format: '+detail+'\n':'')+'\nIdea:\n'+idea+'\n\nPlease produce a clear, polished result. Keep the details consistent with the idea and ask for clarification if something essential is missing.\n\nNote: This is a prepared prompt from the DreamForge prototype, not an AI-generated final result.';
+    result.textContent=textOut;result.style.display='block';
+    const btn=result.previousElementSibling;
+    toast('Your brief is ready. Copy it whenever you need it.');
+  }
+</script>
+</body>
+</html>
